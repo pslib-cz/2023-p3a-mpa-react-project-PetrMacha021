@@ -2,7 +2,8 @@
 
 ## Téma
 
-Tady bude krátký a úderný popis o účelu, významu, funkcionalitě...
+Nákupní košík
+E-shop s přidáváním a mazáním do košíku. Možnost přidat a přeskládat položky v e-shopu.
 
 ## Odkazy pro vývoj
 
