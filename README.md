@@ -2,8 +2,10 @@
 
 ## Téma
 
-Nákupní košík
-E-shop s přidáváním a mazáním do košíku. Možnost přidat a přeskládat položky v e-shopu.
+IQ OBVODY
+https://mindok.cz/hra/iq-obvody/
+
+
 
 ## Odkazy pro vývoj
 
