@@ -7,4 +7,5 @@ export default defineConfig({
   plugins: [react(),
     TanStackRouterVite()
   ],
+  base: '/2023-p3a-mpa-react-project-PetrMacha021/'
 })
