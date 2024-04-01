@@ -3,7 +3,10 @@ import {createRouter, RouterProvider} from "@tanstack/react-router";
 import {routeTree} from "./routeTree.gen.ts";
 import {StrictMode} from "react";
 
-const router = createRouter({ routeTree });
+const router = createRouter({
+  routeTree,
+  basepath: "/2023-p3a-mpa-react-project-PetrMacha021/"
+});
 
 declare module '@tanstack/react-router' {
   interface Register {
@@ -16,7 +19,7 @@ if (rootElement && !rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(
     <StrictMode>
-      <RouterProvider router={router} />
+      <RouterProvider router={router}/>
     </StrictMode>
   );
 }
