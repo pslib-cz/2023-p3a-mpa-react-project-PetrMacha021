@@ -39,7 +39,7 @@ jobs:
       - name: Install TanStack Router CLI
         run: npm install @tanstack/router-cli
       - name: Generate Route Tree
-        run: tsr generate
+        run: npx tsr generate
       - name: Build
         run: npm run build
       - name: Setup Pages
