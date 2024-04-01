@@ -35,7 +35,7 @@ jobs:
           node-version: 20
           cache: 'npm'
       - name: Install dependencies
-        run: npm ci
+        run: npm i
       - name: Install TanStack Router CLI
         run: npm install @tanstack/router-cli
       - name: Generate Route Tree
