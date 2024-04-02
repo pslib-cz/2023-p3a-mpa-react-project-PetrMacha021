@@ -1,4 +1,4 @@
-type Connection = {
+export interface Connection {
   top: boolean;
   right: boolean;
   bottom: boolean;
