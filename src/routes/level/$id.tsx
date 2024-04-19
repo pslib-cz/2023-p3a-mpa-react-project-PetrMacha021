@@ -49,6 +49,7 @@ function Component() {
           dispatch({type: "SET_TILE", tile: tiles[i][j], x: x + j, y: y + i});
         }
       }
+      dispatch({type: "SET_PIECES", pieces: [{x, y, tiles}]});
     }
   };
 

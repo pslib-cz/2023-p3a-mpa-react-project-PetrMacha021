@@ -1,4 +1,5 @@
 .board {
+    position: relative;
     display: grid;
     width: max-content;
     grid-gap: 1px;
