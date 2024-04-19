@@ -1,0 +1,13 @@
+.piece {
+    display: grid;
+    width: max-content;
+    background: var(--piece-background);
+    grid-gap: 1px;
+}
+
+.tile {
+    width: 100px;
+    height: 100px;
+    outline: var(--board-border) 1px solid;
+}
+

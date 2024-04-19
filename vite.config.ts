@@ -1,6 +1,7 @@
 import {defineConfig} from 'vite';
 import react from '@vitejs/plugin-react-swc';
 import {TanStackRouterVite} from "@tanstack/router-vite-plugin";
+import config from "./config.json";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -8,5 +9,5 @@ export default defineConfig({
     react(),
     TanStackRouterVite()
   ],
-  base: '/2023-p3a-mpa-react-project-PetrMacha021/'
+  base: config.base,
 });

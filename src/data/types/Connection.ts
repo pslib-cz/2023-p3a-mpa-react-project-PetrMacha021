@@ -3,4 +3,5 @@ export interface Connection {
   right: boolean;
   bottom: boolean;
   left: boolean;
+  start?: boolean;
 }
