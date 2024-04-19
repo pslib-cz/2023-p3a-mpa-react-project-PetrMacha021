@@ -1,9 +1,3 @@
-.tile {
-    width: 100px;
-    height: 100px;
-    outline: var(--board-border) 1px solid;
-}
-
 .board {
     display: grid;
     width: max-content;
