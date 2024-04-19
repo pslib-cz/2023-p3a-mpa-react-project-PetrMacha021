@@ -1,10 +1,21 @@
 import Styles from "./Board.module.css";
-import {board} from "../../data/Examples";
 import BoardTile from "./Tile/BoardTile.tsx";
+import {useContext, useEffect, useState} from "react";
+import {BoardContext} from "../../providers/BoardProvider.tsx";
+import {Tile} from "../../data/types/Tile.ts";
 
 export default function Board() {
+  const {state} = useContext(BoardContext);
+
+  const [board, setBoard] = useState([] as Tile[][]);
+
+  useEffect(() => {
+    console.log(state.tiles);
+    setBoard(state.tiles);
+  }, [state.tiles]);
+
   return <div className={Styles.board}>
-    {board.tiles.map((row, y) =>
+    {board.map((row, y) =>
         row.map((tile, x) => <BoardTile tile={tile} x={x} y={y} key={`${x.toString()}${y.toString()}`} />)
     )}
   </div>;

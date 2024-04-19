@@ -6,6 +6,9 @@ import {useDraggable} from "@dnd-kit/core";
 export default function PieceDisplay({piece}: { piece: Piece }) {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: piece.id.toString(),
+    data: {
+      tiles: piece.tiles
+    },
   });
 
   const style = transform ? {

@@ -1,21 +1,16 @@
 import {createFileRoute} from "@tanstack/react-router";
 import Board from "../../components/Board/Board.tsx";
 import PieceDisplay from "../../components/Piece/PieceDisplay.tsx";
-import {L_SHAPE} from "../../data/Examples.ts";
+import {board, L_SHAPE} from "../../data/Examples.ts";
 import Styles from "./level.module.css";
 import {Collision, CollisionDetection, DndContext, DragEndEvent} from "@dnd-kit/core";
+import {Tile} from "../../data/types/Tile.ts";
+import {BoardContext} from "../../providers/BoardProvider.tsx";
+import {useContext, useEffect} from "react";
 
 export const Route = createFileRoute('/level/$id')({
   component: Component
 });
-
-function handleDragEnd(event: DragEndEvent) {
-  const {over} = event;
-
-  if (over) {
-    console.log('Dropped over:', over.id);
-  }
-}
 
 const collisionDetection: CollisionDetection = (args) => {
   const collisions: Collision[] = [];
@@ -25,7 +20,7 @@ const collisionDetection: CollisionDetection = (args) => {
     const rect = droppableRects.get(container.id);
     if (!rect) continue;
     if (rect.top < collisionRect.bottom && rect.bottom > collisionRect.top && rect.left < collisionRect.right && rect.right > collisionRect.left) {
-      collisions.push({ id: container.id, data: {container} });
+      collisions.push({id: container.id, data: {container}});
     }
   }
 
@@ -34,12 +29,35 @@ const collisionDetection: CollisionDetection = (args) => {
 
 function Component() {
   const {id} = Route.useParams();
+  const { dispatch } = useContext(BoardContext);
+
+  useEffect(() => {
+    dispatch({type: "SET_TILES", tiles: board.tiles});
+  }, [dispatch]);
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const {active, over} = event;
+
+    if (over) {
+      const id = over.id.toString();
+      const x = +id[0];
+      const y = +id[1];
+      console.log(`Dropped over ${x.toString()}, ${y.toString()}`);
+      const tiles = active.data.current?.tiles as Tile[][];
+      for (let i = 0; i < tiles.length; i++) {
+        for (let j = 0; j < tiles[i].length; j++) {
+          dispatch({type: "SET_TILE", tile: tiles[i][j], x: x + j, y: y + i});
+        }
+      }
+    }
+  };
+
   return <>
     <h1>Level {id}</h1>
     <div className={Styles.game}>
       <DndContext onDragEnd={handleDragEnd} collisionDetection={collisionDetection}>
-        <Board/>
-        <PieceDisplay piece={L_SHAPE}/>
+          <Board/>
+          <PieceDisplay piece={L_SHAPE}/>
       </DndContext>
     </div>
   </>;
