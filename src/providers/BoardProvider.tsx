@@ -10,13 +10,17 @@ export interface BoardPiece {
 
 const initialState: BoardState = {
   tiles: [],
-  pieces: []
+  pieces: [],
+  hoveredPiece: null
 };
 
 export type Action =
   | { type: "SET_TILES"; tiles: Tile[][] }
   | { type: "SET_TILE"; tile: Tile, x: number, y: number }
-  | { type: "SET_PIECES"; pieces: BoardPiece[] };
+  | { type: "ADD_PIECE"; piece: BoardPiece }
+  | { type: "REMOVE_PIECE", x: number, y: number }
+  | { type: "MOVE_PIECE", x: number, y: number, newX: number, newY: number }
+  | { type: "HOVER_PIECE", piece: BoardPiece | null };
 
 function reducer(state: BoardState, action: Action): BoardState {
   switch (action.type) {
@@ -24,13 +28,23 @@ function reducer(state: BoardState, action: Action): BoardState {
       return {...state, tiles: action.tiles};
     case "SET_TILE":
       // eslint-disable-next-line no-case-declarations
-      const tiles = state.tiles.map(row => [...row]);
+      const tiles = state.tiles;
       tiles[action.y][action.x] = action.tile;
-      return {...state, tiles};
-    case "SET_PIECES":
-      return {...state, pieces: action.pieces};
-    default:
-      return state;
+      return {...state, tiles: tiles};
+    case "ADD_PIECE":
+      return {...state, pieces: [...state.pieces, action.piece]};
+    case "REMOVE_PIECE":
+      return {...state, pieces: state.pieces.filter(piece => piece.x !== action.x || piece.y !== action.y)};
+    case "MOVE_PIECE":
+      return {...state,
+        pieces: state.pieces.map(piece => piece.x === state.hoveredPiece?.x && piece.y === state.hoveredPiece.y ? {
+          ...piece,
+          x: action.newX,
+          y: action.newY
+        } : piece)
+      };
+    case "HOVER_PIECE":
+      return {...state, hoveredPiece: action.piece};
   }
 }
 

@@ -1,6 +1,6 @@
 import {Tile} from "./Tile.ts";
 
 export interface Piece {
-  id: number;
+  id: string;
   tiles: Tile[][];
 }

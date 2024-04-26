@@ -1,12 +1,12 @@
 import {createFileRoute} from "@tanstack/react-router";
-import Board from "../../components/Board/Board.tsx";
-import PieceDisplay from "../../components/Piece/PieceDisplay.tsx";
 import {board, L_SHAPE} from "../../data/Examples.ts";
 import Styles from "./level.module.css";
 import {Collision, CollisionDetection, DndContext, DragEndEvent} from "@dnd-kit/core";
-import {Tile} from "../../data/types/Tile.ts";
 import {BoardContext} from "../../providers/BoardProvider.tsx";
 import {useContext, useEffect} from "react";
+import {Board} from "../../components/Board/Board.tsx";
+import PieceDisplay from "../../components/Piece/PieceDisplay.tsx";
+import {Tile} from "../../data/types/Tile.ts";
 
 export const Route = createFileRoute('/level/$id')({
   component: Component
@@ -42,14 +42,14 @@ function Component() {
       const id = over.id.toString();
       const x = +id[0];
       const y = +id[1];
-      console.log(`Dropped over ${x.toString()}, ${y.toString()}`);
       const tiles = active.data.current?.tiles as Tile[][];
-      for (let i = 0; i < tiles.length; i++) {
-        for (let j = 0; j < tiles[i].length; j++) {
-          dispatch({type: "SET_TILE", tile: tiles[i][j], x: x + j, y: y + i});
-        }
+      console.log(`Dropped over ${x.toString()}, ${y.toString()}`);
+
+      if (active.id.toString().length == 2) {
+        dispatch({type: "MOVE_PIECE", x: parseInt(id[0]), y: parseInt(id[1]), newX: x, newY: y});
+      } else {
+        dispatch({type: "ADD_PIECE", piece: {x, y, tiles: tiles}});
       }
-      dispatch({type: "SET_PIECES", pieces: [{x, y, tiles}]});
     }
   };
 
@@ -57,8 +57,8 @@ function Component() {
     <h1>Level {id}</h1>
     <div className={Styles.game}>
       <DndContext onDragEnd={handleDragEnd} collisionDetection={collisionDetection}>
-          <Board/>
-          <PieceDisplay piece={L_SHAPE}/>
+        <Board />
+        <PieceDisplay piece={L_SHAPE} x={-1} y={-1} />
       </DndContext>
     </div>
   </>;

@@ -9,4 +9,5 @@ export interface GameState {
 export interface BoardState {
   tiles: Tile[][];
   pieces: BoardPiece[];
+  hoveredPiece: BoardPiece | null;
 }

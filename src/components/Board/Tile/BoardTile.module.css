@@ -1,6 +1,5 @@
 .tile {
-    width: 100px;
-    height: 100px;
+    width: 6em;
+    height: 6em;
     outline: var(--board-border) 1px solid;
 }
-
