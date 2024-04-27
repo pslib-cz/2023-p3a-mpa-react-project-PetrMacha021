@@ -1,15 +1,16 @@
-import {Piece} from '../../data/types/Piece';
+import {BoardPiece} from '../../data/types/Piece';
 import TileDisplay from "../Tile/TileDisplay.tsx";
 import Styles from "./PieceDisplay.module.css";
 import {useDraggable} from "@dnd-kit/core";
 import {BoardContext} from "../../providers/BoardProvider.tsx";
 import {useContext} from "react";
 
-export default function PieceDisplay({piece, x, y}: { piece: Piece, x: number, y: number }) {
+export default function PieceDisplay({piece, id}: { piece: BoardPiece, id?: string }) {
   const {dispatch} = useContext(BoardContext);
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
-    id: piece.id.toString(),
+    id: id ?? `${piece.x.toString()}${piece.y.toString()}`,
     data: {
+      uid: piece.uid,
       tiles: piece.tiles
     },
   });
@@ -20,7 +21,7 @@ export default function PieceDisplay({piece, x, y}: { piece: Piece, x: number, y
 
   return (
     <div className={Styles.piece} ref={setNodeRef} style={style} onMouseDown={() => {
-      dispatch({type: "HOVER_PIECE", piece: {x, y, tiles: piece.tiles}});
+      dispatch({type: "HOVER_PIECE", piece: {uid: piece.uid, x: piece.x, y: piece.y, tiles: piece.tiles}});
     }} {...listeners} {...attributes}>
       {piece.tiles.map((row, i) => {
           return row.map((tile, j) => {
