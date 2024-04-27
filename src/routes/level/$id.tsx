@@ -6,6 +6,7 @@ import {useContext, useEffect} from "react";
 import {Board} from "../../components/Board/Board.tsx";
 import {Tile} from "../../data/types/Tile.ts";
 import Magazine from "../../components/Magazine/Magazine.tsx";
+import {GameContext} from "../../providers/GameProvider.tsx";
 
 export const Route = createFileRoute('/level/$id')({
   component: Component
@@ -28,11 +29,36 @@ const collisionDetection: CollisionDetection = (args) => {
 
 function Component() {
   const {id} = Route.useParams();
-  const {dispatch} = useContext(BoardContext);
+  const {state, dispatch} = useContext(BoardContext);
+  const {dispatch: gameDispatch} = useContext(GameContext);
 
   useEffect(() => {
     dispatch({type: "LOAD_LEVEL", level: parseInt(id)});
   }, [dispatch, id]);
+
+  useEffect(() => {
+    // Check if the level is complete
+    let complete = true;
+    if (state.board.pieces.length === 0) return;
+    if (state.board.pieces.length !== state.pieces.length) return;
+    for (const piece of state.board.pieces) {
+      const p = state.pieces.find(p => p.uid === piece.uid);
+      console.log(`Checking piece ${piece.uid}`);
+      if (!p) {
+        complete = false;
+        break;
+      }
+
+      if (piece.x !== p.x || piece.y !== p.y) {
+        complete = false;
+        break;
+      }
+    }
+
+    if (complete) {
+      gameDispatch({type: "COMPLETE_LEVEL", level: parseInt(id)});
+    }
+  }, [state.pieces]);
 
   const handleDragEnd = (event: DragEndEvent) => {
     const {active, over} = event;

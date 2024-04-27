@@ -6,16 +6,20 @@ const initialState: GameState = {
 };
 
 export type Action =
-  | { type: "SET_LEVELS"; levels: GameState["levels"] };
+  | { type: "SET_LEVELS"; levels: GameState["levels"] }
+  | { type: "COMPLETE_LEVEL", level: number };
 
-export const reducer = (state: GameState, action: Action): GameState => {
+function reducer (state: GameState, action: Action): GameState {
   switch (action.type) {
     case "SET_LEVELS":
       return { ...state, levels: action.levels };
+    case "COMPLETE_LEVEL":
+      console.log(`Completing level ${action.level}`);
+      return state;
     default:
       return state;
   }
-};
+}
 
 export const GameContext = createContext<{
   state: GameState;
