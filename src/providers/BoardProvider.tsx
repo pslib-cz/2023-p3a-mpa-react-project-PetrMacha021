@@ -33,10 +33,37 @@ function reducer(state: BoardState, action: Action): BoardState {
       return {...state};
     case "ADD_PIECE":
       console.log(`Adding piece ${action.piece.uid}`);
+      for (let y = 0; y < action.piece.tiles.length; y++) {
+        // eslint-disable-next-line @typescript-eslint/prefer-for-of
+        for (let x = 0; x < action.piece.tiles[y].length; x++) {
+          if (y + action.piece.y >= state.board.size.y || x + action.piece.x>= state.board.size.x) {
+            console.log(`Piece ${action.piece.uid} out of bounds`);
+            console.log(`Tile on x: ${(x + action.piece.x).toString()} y: ${(y + action.piece.y).toString()} is out of bounds`);
+            return state;
+          }
+        }
+      }
       return {...state, pieces: [...state.pieces, action.piece]};
     case "REMOVE_PIECE":
       return {...state, pieces: state.pieces.filter(piece => piece.x !== action.x || piece.y !== action.y)};
     case "MOVE_PIECE":
+      // eslint-disable-next-line no-case-declarations
+      const piece = state.pieces.find(piece => piece.x === state.hoveredPiece?.x && piece.y === state.hoveredPiece.y);
+      if (!piece) {
+        console.log(`Piece not found at x: ${action.x.toString()}, y: ${action.y.toString()}`);
+        return state;
+      }
+      // eslint-disable-next-line @typescript-eslint/prefer-for-of
+      for (let y = 0; y < piece.tiles.length; y++) {
+        // eslint-disable-next-line @typescript-eslint/prefer-for-of
+        for (let x = 0; x < piece.tiles[y].length; x++) {
+          if (y + action.newY >= state.board.size.y || x + action.newX >= state.board.size.x) {
+            console.log(`Piece ${piece.uid} out of bounds`);
+            console.log(`x: ${x.toString()}, y: ${y.toString()}, newX: ${action.newX.toString()}, newY: ${action.newY.toString()}`);
+            return state;
+          }
+        }
+      }
       return {
         ...state,
         pieces: state.pieces.map(piece => piece.x === state.hoveredPiece?.x && piece.y === state.hoveredPiece.y ? {
