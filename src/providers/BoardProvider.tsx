@@ -27,14 +27,13 @@ function reducer(state: BoardState, action: Action): BoardState {
     case "SET_TILES":
       return {...state};
     case "SET_TILE":
-      // eslint-disable-next-line no-case-declarations
       // const tiles = state.tiles;
       // tiles[action.y][action.x] = action.tile;
       return {...state};
     case "ADD_PIECE":
       console.log(`Adding piece ${action.piece.uid}`);
+      // eslint-disable-next-line no-case-declarations
       for (let y = 0; y < action.piece.tiles.length; y++) {
-        // eslint-disable-next-line @typescript-eslint/prefer-for-of
         for (let x = 0; x < action.piece.tiles[y].length; x++) {
           if (y + action.piece.y >= state.board.size.y || x + action.piece.x>= state.board.size.x) {
             console.log(`Piece ${action.piece.uid} out of bounds`);
@@ -42,6 +41,10 @@ function reducer(state: BoardState, action: Action): BoardState {
             return state;
           }
         }
+      }
+      if (checkPieceOverlap(state.pieces, action.piece)) {
+        console.log(`Piece ${action.piece.uid} overlaps with another piece`);
+        return state;
       }
       return {...state, pieces: [...state.pieces, action.piece]};
     case "REMOVE_PIECE":
@@ -53,9 +56,7 @@ function reducer(state: BoardState, action: Action): BoardState {
         console.log(`Piece not found at x: ${action.x.toString()}, y: ${action.y.toString()}`);
         return state;
       }
-      // eslint-disable-next-line @typescript-eslint/prefer-for-of
       for (let y = 0; y < piece.tiles.length; y++) {
-        // eslint-disable-next-line @typescript-eslint/prefer-for-of
         for (let x = 0; x < piece.tiles[y].length; x++) {
           if (y + action.newY >= state.board.size.y || x + action.newX >= state.board.size.x) {
             console.log(`Piece ${piece.uid} out of bounds`);
@@ -64,13 +65,19 @@ function reducer(state: BoardState, action: Action): BoardState {
           }
         }
       }
+      // eslint-disable-next-line no-case-declarations
+      const newPiece: BoardPiece = {
+        ...piece,
+        x: action.newX,
+        y: action.newY
+      };
+      if (checkPieceOverlap(state.pieces.filter(x => x.uid !== piece.uid), newPiece)) {
+        console.log(`Piece ${piece.uid} overlaps with another piece`);
+        return state;
+      }
       return {
         ...state,
-        pieces: state.pieces.map(piece => piece.x === state.hoveredPiece?.x && piece.y === state.hoveredPiece.y ? {
-          ...piece,
-          x: action.newX,
-          y: action.newY
-        } : piece)
+        pieces: state.pieces.map(piece => piece.x === state.hoveredPiece?.x && piece.y === state.hoveredPiece.y ? newPiece : piece)
       };
     case "HOVER_PIECE":
       return {...state, hoveredPiece: action.piece};
@@ -78,9 +85,33 @@ function reducer(state: BoardState, action: Action): BoardState {
       return {
         board: Levels[action.level-1].board,
         pieces: [],
-        hoveredPiece: null
+        hoveredPiece: null,
       };
   }
+}
+
+function checkPieceOverlap(pieces: BoardPiece[], newPiece: BoardPiece): boolean {
+  const positions: [number, number][] = [];
+  for (const piece of pieces) {
+    for (let y = 0; y < piece.tiles.length; y++) {
+      for (let x = 0; x < piece.tiles[y].length; x++) {
+        positions.push([x + piece.x, y + piece.y]);
+      }
+    }
+  }
+
+  console.log(positions);
+
+  for (let y = 0; y < newPiece.tiles.length; y++) {
+    for (let x = 0; x < newPiece.tiles[y].length; x++) {
+      console.log([x + newPiece.x, y + newPiece.y]);
+      console.log(positions.some(([x, y]) => x === newPiece.x && y === newPiece.y));
+      if (positions.some(([x, y]) => x === newPiece.x && y === newPiece.y)) {
+        return true;
+      }
+    }
+  }
+  return false;
 }
 
 export const BoardContext = createContext<{
