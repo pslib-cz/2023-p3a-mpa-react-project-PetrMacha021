@@ -10,4 +10,5 @@ export interface BoardPiece {
   x: number;
   y: number;
   tiles: Tile[][];
+  locked: boolean;
 }

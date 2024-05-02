@@ -84,7 +84,7 @@ function reducer(state: BoardState, action: Action): BoardState {
     case "LOAD_LEVEL":
       return {
         board: Levels[action.level-1].board,
-        pieces: [],
+        pieces: Levels[action.level-1].board.pieces.filter(piece => piece.locked),
         hoveredPiece: null,
       };
   }

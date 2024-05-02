@@ -43,13 +43,16 @@ function Component() {
     if (state.board.pieces.length !== state.pieces.length) return;
     for (const piece of state.board.pieces) {
       const p = state.pieces.find(p => p.uid === piece.uid);
-      console.log(`Checking piece ${piece.uid}`);
       if (!p) {
+        console.log(`❗ Piece ${piece.uid} not found`);
         complete = false;
         break;
       }
 
+      console.log(`Checking piece ${piece.uid} at ${piece.x.toString()}, ${piece.y.toString()} against ${p.x.toString()}, ${p.y.toString()}`);
+
       if (piece.x !== p.x || piece.y !== p.y) {
+        console.log(`❗ Piece ${piece.uid} is in x:${p.x.toString()} y:${p.y.toString()} instead of x:${piece.x.toString()} y:${piece.y.toString()}`);
         complete = false;
         break;
       }
@@ -74,7 +77,7 @@ function Component() {
       if (active.id.toString().length == 2) {
         dispatch({type: "MOVE_PIECE", x: parseInt(id[0]), y: parseInt(id[1]), newX: x, newY: y});
       } else {
-        dispatch({type: "ADD_PIECE", piece: {uid: active.data.current?.uid as string, x, y, tiles}});
+        dispatch({type: "ADD_PIECE", piece: {uid: active.data.current?.uid as string, x, y, tiles, locked: false}});
       }
     }
   };

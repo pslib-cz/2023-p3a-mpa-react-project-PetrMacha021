@@ -1,4 +1,4 @@
-import {DOWN_RIGHT, EMPTY, LEFT_RIGHT, UP_DOWN, UP_RIGHT} from "./types/Tile.ts";
+import {DOWN_RIGHT, EMPTY, LEFT_RIGHT, START_LEFT, UP_DOWN, UP_RIGHT} from "./types/Tile.ts";
 import {Level} from "./types/Level.ts";
 
 export const Levels: Level[] = [
@@ -13,19 +13,45 @@ export const Levels: Level[] = [
           x: 0,
           y: 0,
           tiles: [
-            [DOWN_RIGHT, LEFT_RIGHT],
-            [UP_DOWN, EMPTY]
-          ]
+            [DOWN_RIGHT],
+            [UP_DOWN],
+            [UP_DOWN],
+            [UP_RIGHT]
+          ],
+          locked: false
         },
         {
           uid: "2",
-          x: 0,
+          x: 1,
           y: 2,
           tiles: [
-            [UP_DOWN],
-            [UP_RIGHT]
-          ]
-        }
+            [EMPTY, EMPTY],
+            [LEFT_RIGHT, LEFT_RIGHT]
+          ],
+          locked: false
+        },
+        {
+          uid: "3",
+          x: 1,
+          y: 0,
+          tiles: [
+            [LEFT_RIGHT, LEFT_RIGHT],
+            [EMPTY, EMPTY]
+          ],
+          locked: false
+        },
+        {
+          uid: "4",
+          x: 3,
+          y: 0,
+          tiles: [
+            [START_LEFT],
+            [EMPTY],
+            [EMPTY],
+            [START_LEFT]
+          ],
+          locked: true
+        },
       ],
       size: {x: 4, y: 4},
     }

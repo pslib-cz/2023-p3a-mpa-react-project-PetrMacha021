@@ -13,6 +13,7 @@ export default function PieceDisplay({piece, id}: { piece: BoardPiece, id?: stri
       uid: piece.uid,
       tiles: piece.tiles
     },
+    disabled: piece.locked
   });
 
   const style = transform ? {
@@ -21,7 +22,7 @@ export default function PieceDisplay({piece, id}: { piece: BoardPiece, id?: stri
 
   return (
     <div className={Styles.piece} ref={setNodeRef} style={style} onMouseDown={() => {
-      dispatch({type: "HOVER_PIECE", piece: {uid: piece.uid, x: piece.x, y: piece.y, tiles: piece.tiles}});
+      dispatch({type: "HOVER_PIECE", piece: {uid: piece.uid, x: piece.x, y: piece.y, tiles: piece.tiles, locked: piece.locked}});
     }} {...listeners} {...attributes}>
       {piece.tiles.map((row, i) => {
           return row.map((tile, j) => {
