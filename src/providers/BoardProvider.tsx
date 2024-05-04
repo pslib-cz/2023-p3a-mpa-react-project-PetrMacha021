@@ -17,7 +17,8 @@ export type Action =
   | { type: "SET_TILES"; tiles: Tile[][] }
   | { type: "SET_TILE"; tile: Tile, x: number, y: number }
   | { type: "ADD_PIECE"; piece: BoardPiece }
-  | { type: "REMOVE_PIECE", x: number, y: number }
+  | {type: "REMOVE_PIECE", x: number, y: number}
+  | {type: "LOCK_PIECE", uid: string}
   | { type: "MOVE_PIECE", x: number, y: number, newX: number, newY: number }
   | { type: "HOVER_PIECE", piece: BoardPiece | null }
   | { type: "LOAD_LEVEL", level: Level };
@@ -48,7 +49,13 @@ function reducer(state: BoardState, action: Action): BoardState {
       }
       return {...state, pieces: [...state.pieces, action.piece]};
     case "REMOVE_PIECE":
-      return {...state, pieces: state.pieces.filter(piece => piece.x !== action.x || piece.y !== action.y)};
+      console.error("REMOVE_PIECE NOT IMPLEMENTED");
+      return state;
+    case "LOCK_PIECE":
+      return {
+        ...state,
+        pieces: state.pieces.map(piece => piece.uid === action.uid ? {...piece, locked: true} : piece)
+      };
     case "MOVE_PIECE":
       // eslint-disable-next-line no-case-declarations
       const piece = state.pieces.find(piece => piece.x === state.hoveredPiece?.x && piece.y === state.hoveredPiece.y);
@@ -84,7 +91,7 @@ function reducer(state: BoardState, action: Action): BoardState {
     case "LOAD_LEVEL":
       return {
         board: action.level.board,
-        pieces: action.level.completed ? action.level.board.pieces : action.level.board.pieces.filter(piece => piece.locked),
+        pieces: action.level.completed ? action.level.board.pieces.map(piece => ({...piece, locked: true})) : action.level.board.pieces.filter(piece => piece.locked),
         hoveredPiece: null,
       };
   }
