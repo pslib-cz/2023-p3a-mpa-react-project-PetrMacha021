@@ -2,7 +2,7 @@ import {BoardState} from "../data/types/Provider.ts";
 import {createContext, Dispatch, ReactNode, useReducer} from "react";
 import {Tile} from "../data/types/Tile.ts";
 import {BoardPiece} from "../data/types/Piece.ts";
-import {Levels} from "../data/Levels.ts";
+import {Level} from "../data/types/Level.ts";
 
 const initialState: BoardState = {
   board: {
@@ -20,7 +20,7 @@ export type Action =
   | { type: "REMOVE_PIECE", x: number, y: number }
   | { type: "MOVE_PIECE", x: number, y: number, newX: number, newY: number }
   | { type: "HOVER_PIECE", piece: BoardPiece | null }
-  | { type: "LOAD_LEVEL", level: number };
+  | { type: "LOAD_LEVEL", level: Level };
 
 function reducer(state: BoardState, action: Action): BoardState {
   switch (action.type) {
@@ -83,8 +83,8 @@ function reducer(state: BoardState, action: Action): BoardState {
       return {...state, hoveredPiece: action.piece};
     case "LOAD_LEVEL":
       return {
-        board: Levels[action.level-1].board,
-        pieces: Levels[action.level-1].board.pieces.filter(piece => piece.locked),
+        board: action.level.board,
+        pieces: action.level.completed ? action.level.board.pieces : action.level.board.pieces.filter(piece => piece.locked),
         hoveredPiece: null,
       };
   }

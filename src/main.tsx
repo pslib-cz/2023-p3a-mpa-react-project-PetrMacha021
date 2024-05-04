@@ -2,10 +2,11 @@ import ReactDOM from "react-dom/client";
 import {createRouter, RouterProvider} from "@tanstack/react-router";
 import {routeTree} from "./routeTree.gen.ts";
 import {StrictMode} from "react";
+import config from "../config.json";
 
 const router = createRouter({
   routeTree,
-  basepath: "/2023-p3a-mpa-react-project-PetrMacha021/"
+  basepath: config.base,
 });
 
 declare module '@tanstack/react-router' {

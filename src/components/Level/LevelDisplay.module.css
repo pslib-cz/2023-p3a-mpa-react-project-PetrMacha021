@@ -1,0 +1,13 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 2em 3em;
+    background: var(--container);
+    width: max-content;
+    text-decoration: none;
+    color: var(--text);
+    border-radius: 0.5em;
+    gap: 1em;
+}

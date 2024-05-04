@@ -1,4 +1,4 @@
-import {createFileRoute} from "@tanstack/react-router";
+import {createFileRoute, Link, redirect} from "@tanstack/react-router";
 import Styles from "./level.module.css";
 import {Collision, CollisionDetection, DndContext, DragEndEvent} from "@dnd-kit/core";
 import {BoardContext} from "../../providers/BoardProvider.tsx";
@@ -7,6 +7,7 @@ import {Board} from "../../components/Board/Board.tsx";
 import {Tile} from "../../data/types/Tile.ts";
 import Magazine from "../../components/Magazine/Magazine.tsx";
 import {GameContext} from "../../providers/GameProvider.tsx";
+import { Route as IndexRoute } from "../index.tsx";
 
 export const Route = createFileRoute('/level/$id')({
   component: Component
@@ -30,10 +31,17 @@ const collisionDetection: CollisionDetection = (args) => {
 function Component() {
   const {id} = Route.useParams();
   const {state, dispatch} = useContext(BoardContext);
-  const {dispatch: gameDispatch} = useContext(GameContext);
+  const {state: gameState, dispatch: gameDispatch} = useContext(GameContext);
 
   useEffect(() => {
-    dispatch({type: "LOAD_LEVEL", level: parseInt(id)});
+    const level = gameState.levels.find(level => level.id === parseInt(id));
+    if (!level) {
+      redirect({
+        to: "/",
+      });
+      return;
+    }
+    dispatch({type: "LOAD_LEVEL", level});
   }, [dispatch, id]);
 
   useEffect(() => {
@@ -83,7 +91,8 @@ function Component() {
   };
 
   return <>
-    <h1>Level {id}</h1>
+    <Link to={IndexRoute.to}>Back</Link>
+    <h2>Level {id}</h2>
     <div className={Styles.game}>
       <DndContext onDragEnd={handleDragEnd} collisionDetection={collisionDetection}>
         <Board/>
