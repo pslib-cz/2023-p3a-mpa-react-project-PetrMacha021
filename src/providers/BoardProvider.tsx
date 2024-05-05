@@ -110,13 +110,13 @@ function checkPieceOverlap(pieces: BoardPiece[], newPiece: BoardPiece): boolean 
     }
   }
 
-  console.log(positions);
-
+  console.log("Checking overlap for piece ", newPiece.uid);
+  console.log("Positions of other pieces", positions);
   for (let y = 0; y < newPiece.tiles.length; y++) {
     for (let x = 0; x < newPiece.tiles[y].length; x++) {
-      console.log([x + newPiece.x, y + newPiece.y]);
-      console.log(positions.some(([x, y]) => x === newPiece.x && y === newPiece.y));
-      if (positions.some(([x, y]) => x === newPiece.x && y === newPiece.y)) {
+      console.log(`Checking x: ${(x + newPiece.x).toString()} y: ${(y + newPiece.y).toString()} against positions`);
+      console.log(positions.some(([px, py]) => px === newPiece.x + x && py === newPiece.y + y));
+      if (positions.some(([px, py]) => px === newPiece.x + x && py === newPiece.y + y)) {
         return true;
       }
     }
