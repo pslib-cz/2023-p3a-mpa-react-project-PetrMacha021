@@ -3,6 +3,7 @@ import {useContext, useEffect} from "react";
 import {GameContext} from "../providers/GameProvider.tsx";
 import LevelDisplay from "../components/Level/LevelDisplay.tsx";
 import Styles from "./index.module.css";
+import Debug from "../Debug.ts";
 
 export const Route = createFileRoute('/')({
   component: Component
@@ -12,7 +13,7 @@ function Component() {
   const {state} = useContext(GameContext);
 
   useEffect(() => {
-    console.log('Set levels');
+    Debug('Set levels');
   }, [state.levels]);
 
   return <div>
@@ -23,7 +24,7 @@ function Component() {
       ))}
     </div>
     <button className={"btn btn-secondary"} onClick={() => {
-      console.log("Clearing data from localStorage");
+      Debug("Clearing data from localStorage");
       localStorage.clear();
       window.location.reload();
     }}>Clear data

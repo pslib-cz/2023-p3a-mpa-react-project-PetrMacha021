@@ -8,6 +8,7 @@ import {Tile} from "../../data/types/Tile.ts";
 import Magazine from "../../components/Magazine/Magazine.tsx";
 import {GameContext} from "../../providers/GameProvider.tsx";
 import { Route as IndexRoute } from "../index.tsx";
+import Debug from "../../Debug.ts";
 
 export const Route = createFileRoute('/level/$id')({
   component: Component
@@ -61,15 +62,15 @@ function Component() {
     for (const piece of state.board.pieces) {
       const p = state.pieces.find(p => p.uid === piece.uid);
       if (!p) {
-        console.log(`❗ Piece ${piece.uid} not found`);
+        Debug(`❗ Piece ${piece.uid} not found`);
         complete = false;
         break;
       }
 
-      console.log(`Checking piece ${piece.uid} at x:${p.x.toString()} y:${p.y.toString()}`);
+      Debug(`Checking piece ${piece.uid} at x:${p.x.toString()} y:${p.y.toString()}`);
 
       if (piece.x !== p.x || piece.y !== p.y) {
-        console.log(`❗ Piece ${piece.uid} is in x:${p.x.toString()} y:${p.y.toString()} instead of x:${piece.x.toString()} y:${piece.y.toString()}`);
+        Debug(`❗ Piece ${piece.uid} is in x:${p.x.toString()} y:${p.y.toString()} instead of x:${piece.x.toString()} y:${piece.y.toString()}`);
         complete = false;
         break;
       }
@@ -86,8 +87,8 @@ function Component() {
     const {active, over} = event;
 
     if (over) {
-      console.log("Active object", active);
-      console.log("Dropped on", over);
+      Debug("Active object", active);
+      Debug("Dropped on", over);
       if (over.id === "destroyer") {
         const activeId = active.id.toString();
         const x = +activeId[0];
@@ -100,7 +101,7 @@ function Component() {
       const x = +id[0];
       const y = +id[1];
       const tiles = active.data.current?.tiles as Tile[][];
-      console.log(`Dropped over ${x.toString()}, ${y.toString()}`);
+      Debug(`Dropped over ${x.toString()}, ${y.toString()}`);
 
       if (active.id.toString().length == 2) {
         dispatch({type: "MOVE_PIECE", x: parseInt(id[0]), y: parseInt(id[1]), newX: x, newY: y});

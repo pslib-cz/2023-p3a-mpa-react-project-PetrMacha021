@@ -4,6 +4,7 @@ import PieceDisplay from "../Piece/PieceDisplay.tsx";
 import Styles from "./Magazine.module.css";
 import {BoardPiece} from "../../data/types/Piece.ts";
 import {useDroppable} from "@dnd-kit/core";
+import Debug from "../../Debug.ts";
 
 export default function Magazine() {
   const {state} = useContext(BoardContext);
@@ -15,7 +16,7 @@ export default function Magazine() {
   useEffect(() => {
     const pieces: BoardPiece[] = [];
     for (const piece of state.board.pieces) {
-      console.log(`Checking if piece ${piece.uid} exists on board`, piece);
+      Debug(`Checking if piece ${piece.uid} exists on board`, piece);
 
       let found = false;
       for (const p of state.pieces) {

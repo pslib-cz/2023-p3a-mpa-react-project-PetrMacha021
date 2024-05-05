@@ -1,6 +1,7 @@
 import {GameState} from "../data/types/Provider.ts";
 import {createContext, Dispatch, ReactNode, useEffect, useReducer} from "react";
 import {Levels} from "../data/Levels.ts";
+import Debug from "../Debug.ts";
 
 const initialState: GameState = {
   levels: []
@@ -15,11 +16,11 @@ function reducer (state: GameState, action: Action): GameState {
   let newState = {};
   switch (action.type) {
     case "SET_LEVELS":
-      console.log("Setting levels");
+      Debug("Setting levels");
       newState = { ...state, levels: action.levels };
       break;
     case "COMPLETE_LEVEL":
-      console.log(`Completing level ${action.level.toString()}`);
+      Debug(`Completing level ${action.level.toString()}`);
       newState = {
         ...state,
         levels: state.levels.map((level) => {
@@ -32,7 +33,7 @@ function reducer (state: GameState, action: Action): GameState {
       };
       break;
     case "LOAD_STATE":
-      console.log("Loading state", action.state);
+      Debug("Loading state", action.state);
       newState = action.state;
       break;
     default:
@@ -61,7 +62,7 @@ export const GameProvider = ({children}: { children: ReactNode }) => {
     if (loadedState) {
       dispatch({type: "LOAD_STATE", state: JSON.parse(loadedState) as GameState});
     } else {
-      console.log("No existing state found, initializing with default state.");
+      Debug("No existing state found, initializing with default state.");
       dispatch({type: "LOAD_STATE", state: {
         levels: Levels
       } as GameState});
