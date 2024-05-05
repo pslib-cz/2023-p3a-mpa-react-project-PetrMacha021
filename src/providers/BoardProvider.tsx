@@ -17,8 +17,8 @@ export type Action =
   | { type: "SET_TILES"; tiles: Tile[][] }
   | { type: "SET_TILE"; tile: Tile, x: number, y: number }
   | { type: "ADD_PIECE"; piece: BoardPiece }
-  | {type: "REMOVE_PIECE", x: number, y: number}
-  | {type: "LOCK_PIECE", uid: string}
+  | { type: "REMOVE_PIECE", x: number, y: number }
+  | { type: "LOCK_PIECE", uid: string }
   | { type: "MOVE_PIECE", x: number, y: number, newX: number, newY: number }
   | { type: "HOVER_PIECE", piece: BoardPiece | null }
   | { type: "LOAD_LEVEL", level: Level };
@@ -36,7 +36,7 @@ function reducer(state: BoardState, action: Action): BoardState {
       // eslint-disable-next-line no-case-declarations
       for (let y = 0; y < action.piece.tiles.length; y++) {
         for (let x = 0; x < action.piece.tiles[y].length; x++) {
-          if (y + action.piece.y >= state.board.size.y || x + action.piece.x>= state.board.size.x) {
+          if (y + action.piece.y >= state.board.size.y || x + action.piece.x >= state.board.size.x) {
             console.log(`Piece ${action.piece.uid} out of bounds`);
             console.log(`Tile on x: ${(x + action.piece.x).toString()} y: ${(y + action.piece.y).toString()} is out of bounds`);
             return state;
@@ -49,8 +49,8 @@ function reducer(state: BoardState, action: Action): BoardState {
       }
       return {...state, pieces: [...state.pieces, action.piece]};
     case "REMOVE_PIECE":
-      console.error("REMOVE_PIECE NOT IMPLEMENTED");
-      return state;
+      console.log(`Removing piece at x: ${action.x.toString()}, y: ${action.y.toString()}`);
+      return {...state, pieces: state.pieces.filter(piece => piece.x !== action.x || piece.y !== action.y)};
     case "LOCK_PIECE":
       return {
         ...state,
@@ -91,7 +91,10 @@ function reducer(state: BoardState, action: Action): BoardState {
     case "LOAD_LEVEL":
       return {
         board: action.level.board,
-        pieces: action.level.completed ? action.level.board.pieces.map(piece => ({...piece, locked: true})) : action.level.board.pieces.filter(piece => piece.locked),
+        pieces: action.level.completed ? action.level.board.pieces.map(piece => ({
+          ...piece,
+          locked: true
+        })) : action.level.board.pieces.filter(piece => piece.locked),
         hoveredPiece: null,
       };
   }

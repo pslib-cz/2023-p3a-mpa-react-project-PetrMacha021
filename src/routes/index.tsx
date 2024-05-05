@@ -8,7 +8,7 @@ export const Route = createFileRoute('/')({
 });
 
 function Component() {
-  const { state, dispatch } = useContext(GameContext);
+  const { state } = useContext(GameContext);
 
   useEffect(() => {
     console.log('Set levels');
@@ -19,5 +19,10 @@ function Component() {
     {state.levels.map((level, i) => (
       <LevelDisplay level={level} key={i}/>
     ))}
+    <button className={"btn btn-secondary"} onClick={() => {
+      console.log("Clearing data from localStorage");
+      localStorage.clear();
+      window.location.reload();
+    }}>Clear data</button>
   </div>;
 }

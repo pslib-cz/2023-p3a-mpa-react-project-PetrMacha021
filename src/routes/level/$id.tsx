@@ -81,11 +81,20 @@ function Component() {
     const {active, over} = event;
 
     if (over) {
+      console.log("Active object", active);
+      console.log("Dropped on", over);
+      if (over.id === "destroyer") {
+        const activeId = active.id.toString();
+        const x = +activeId[0];
+        const y = +activeId[1];
+        if (activeId.length === 1) return;
+        dispatch({type: "REMOVE_PIECE", x, y});
+        return;
+      }
       const id = over.id.toString();
       const x = +id[0];
       const y = +id[1];
       const tiles = active.data.current?.tiles as Tile[][];
-      console.log(active);
       console.log(`Dropped over ${x.toString()}, ${y.toString()}`);
 
       if (active.id.toString().length == 2) {

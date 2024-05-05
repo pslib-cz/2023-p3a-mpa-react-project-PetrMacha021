@@ -10,4 +10,5 @@
     color: var(--text);
     border-radius: 0.5em;
     gap: 1em;
+    font-size: 12px;
 }
