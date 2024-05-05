@@ -15,6 +15,7 @@ function reducer (state: GameState, action: Action): GameState {
   let newState = {};
   switch (action.type) {
     case "SET_LEVELS":
+      console.log("Setting levels");
       newState = { ...state, levels: action.levels };
       break;
     case "COMPLETE_LEVEL":
@@ -31,6 +32,7 @@ function reducer (state: GameState, action: Action): GameState {
       };
       break;
     case "LOAD_STATE":
+      console.log("Loading state", action.state);
       newState = action.state;
       break;
     default:
@@ -57,13 +59,12 @@ export const GameProvider = ({children}: { children: ReactNode }) => {
   useEffect(() => {
     const loadedState = localStorage.getItem("state");
     if (loadedState) {
-      console.log(`Loaded state: ${loadedState}`);
       dispatch({type: "LOAD_STATE", state: JSON.parse(loadedState) as GameState});
     } else {
-      console.log("No state found, initializing with default state.");
+      console.log("No existing state found, initializing with default state.");
       dispatch({type: "LOAD_STATE", state: {
         levels: Levels
-        } as GameState});
+      } as GameState});
     }
 
   }, []);

@@ -18,7 +18,7 @@ export type Action =
   | { type: "SET_TILE"; tile: Tile, x: number, y: number }
   | { type: "ADD_PIECE"; piece: BoardPiece }
   | { type: "REMOVE_PIECE", x: number, y: number }
-  | { type: "LOCK_PIECE", uid: string }
+  | { type: "LOCK_LEVEL" }
   | { type: "MOVE_PIECE", x: number, y: number, newX: number, newY: number }
   | { type: "HOVER_PIECE", piece: BoardPiece | null }
   | { type: "LOAD_LEVEL", level: Level };
@@ -26,8 +26,10 @@ export type Action =
 function reducer(state: BoardState, action: Action): BoardState {
   switch (action.type) {
     case "SET_TILES":
+      console.log("Setting tiles");
       return {...state};
     case "SET_TILE":
+      console.log(`Setting tile at x: ${action.x.toString()}, y: ${action.y.toString()}`);
       // const tiles = state.tiles;
       // tiles[action.y][action.x] = action.tile;
       return {...state};
@@ -51,12 +53,11 @@ function reducer(state: BoardState, action: Action): BoardState {
     case "REMOVE_PIECE":
       console.log(`Removing piece at x: ${action.x.toString()}, y: ${action.y.toString()}`);
       return {...state, pieces: state.pieces.filter(piece => piece.x !== action.x || piece.y !== action.y)};
-    case "LOCK_PIECE":
-      return {
-        ...state,
-        pieces: state.pieces.map(piece => piece.uid === action.uid ? {...piece, locked: true} : piece)
-      };
+    case "LOCK_LEVEL":
+      console.log("Locking level");
+      return {...state, pieces: state.pieces.map(piece => ({...piece, locked: true}))};
     case "MOVE_PIECE":
+      console.log(`Moving piece at x: ${action.x.toString()}, y: ${action.y.toString()} to x: ${action.newX.toString()}, y: ${action.newY.toString()}`);
       // eslint-disable-next-line no-case-declarations
       const piece = state.pieces.find(piece => piece.x === state.hoveredPiece?.x && piece.y === state.hoveredPiece.y);
       if (!piece) {
@@ -87,8 +88,11 @@ function reducer(state: BoardState, action: Action): BoardState {
         pieces: state.pieces.map(piece => piece.x === state.hoveredPiece?.x && piece.y === state.hoveredPiece.y ? newPiece : piece)
       };
     case "HOVER_PIECE":
+      if (!action.piece) return {...state, hoveredPiece: null};
+      console.log(`Hovering piece ${action.piece.uid}`);
       return {...state, hoveredPiece: action.piece};
     case "LOAD_LEVEL":
+      console.log("Loading level", action.level);
       return {
         board: action.level.board,
         pieces: action.level.completed ? action.level.board.pieces.map(piece => ({
@@ -114,8 +118,7 @@ function checkPieceOverlap(pieces: BoardPiece[], newPiece: BoardPiece): boolean 
   console.log("Positions of other pieces", positions);
   for (let y = 0; y < newPiece.tiles.length; y++) {
     for (let x = 0; x < newPiece.tiles[y].length; x++) {
-      console.log(`Checking x: ${(x + newPiece.x).toString()} y: ${(y + newPiece.y).toString()} against positions`);
-      console.log(positions.some(([px, py]) => px === newPiece.x + x && py === newPiece.y + y));
+      console.log(`Checking x: ${(x + newPiece.x).toString()} y: ${(y + newPiece.y).toString()} against positions`, positions.some(([px, py]) => px === newPiece.x + x && py === newPiece.y + y));
       if (positions.some(([px, py]) => px === newPiece.x + x && py === newPiece.y + y)) {
         return true;
       }

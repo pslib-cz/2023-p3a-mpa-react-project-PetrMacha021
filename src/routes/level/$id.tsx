@@ -49,7 +49,12 @@ function Component() {
   }, []);
 
   useEffect(() => {
-    // Check if the level is complete
+    if (!isCompleted) return;
+    dispatch({type: "LOCK_LEVEL"});
+  }, [isCompleted]);
+
+  useEffect(() => {
+    if (isCompleted) return;
     let complete = true;
     if (state.board.pieces.length === 0) return;
     if (state.board.pieces.length !== state.pieces.length) return;
@@ -61,7 +66,7 @@ function Component() {
         break;
       }
 
-      console.log(`Checking piece ${piece.uid} at ${piece.x.toString()}, ${piece.y.toString()} against ${p.x.toString()}, ${p.y.toString()}`);
+      console.log(`Checking piece ${piece.uid} at x:${p.x.toString()} y:${p.y.toString()}`);
 
       if (piece.x !== p.x || piece.y !== p.y) {
         console.log(`❗ Piece ${piece.uid} is in x:${p.x.toString()} y:${p.y.toString()} instead of x:${piece.x.toString()} y:${piece.y.toString()}`);

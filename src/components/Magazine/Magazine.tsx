@@ -15,11 +15,10 @@ export default function Magazine() {
   useEffect(() => {
     const pieces: BoardPiece[] = [];
     for (const piece of state.board.pieces) {
-      console.log(piece);
+      console.log(`Checking if piece ${piece.uid} exists on board`, piece);
 
       let found = false;
       for (const p of state.pieces) {
-        console.log(p.uid, piece.uid);
         if (p.uid === piece.uid) {
           found = true;
           break;
