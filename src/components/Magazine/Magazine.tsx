@@ -30,7 +30,7 @@ export default function Magazine() {
     setPieces(pieces);
   }, [state.board.pieces, state.pieces]);
 
-  return <div className={Styles.magazine}>
+  return <div className={Styles.container}>
     {pieces.map((piece, i) => (
       <div key={i} className={Styles.piece}>
         <PieceDisplay piece={piece} id={i.toString()}/>

@@ -15,6 +15,7 @@ function Component() {
   }, [state.levels]);
 
   return <div>
+    <p>Complete the puzzle by moving the pieces to the correct position.</p>
     {state.levels.map((level, i) => (
       <LevelDisplay level={level} key={i}/>
     ))}

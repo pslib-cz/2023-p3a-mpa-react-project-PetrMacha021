@@ -6,12 +6,22 @@
     --piece-outline: #fff;
     --background: #141218;
     --text: #E6E0E9;
-    --container: #211F26
+    --container: #211F26;
+    --primary: #D0BCFF;
+    --primary-text: #381E72;
+    --secondary: #CCC2DC;
+    --secondary-text: #332D41;
 }
 
 html {
     background: var(--background);
     color: var(--text);
     font-family: 'Noto Sans', sans-serif;
-    font-size: 16px;
+    font-size: 14px;
+}
+
+@media (min-width: 800px) {
+    html {
+        font-size: 16px;
+    }
 }

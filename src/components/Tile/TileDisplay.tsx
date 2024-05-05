@@ -6,6 +6,6 @@ export default function TileDisplay({tile}: {tile: Tile}) {
   const baseUrl = config.base;
 
   return <>
-    <img src={`${baseUrl}tiles/${tile.id.toString()}.svg`} alt="tile" className={Styles.image} />
+    <img src={`${baseUrl}tiles/${tile.id.toString()}.svg`} alt="tile" draggable={false} className={Styles.image} />
   </>;
 }

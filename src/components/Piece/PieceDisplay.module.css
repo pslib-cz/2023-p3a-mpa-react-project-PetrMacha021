@@ -2,12 +2,22 @@
     display: grid;
     width: max-content;
     background: var(--piece-background);
-    grid-gap: 1px;
+    border-collapse: collapse;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
 }
 
 .tile {
-    width: 100px;
-    height: 100px;
-    outline: var(--board-border) 1px solid;
+    width: 4em;
+    height: 4em;
+    border: var(--board-border) 1px solid;
 }
 
+@media (min-width: 800px) {
+    .tile {
+        width: 6em;
+        height: 6em;
+    }
+}

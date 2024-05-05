@@ -2,7 +2,7 @@ import {createFileRoute, Link, redirect} from "@tanstack/react-router";
 import Styles from "./level.module.css";
 import {Collision, CollisionDetection, DndContext, DragEndEvent} from "@dnd-kit/core";
 import {BoardContext} from "../../providers/BoardProvider.tsx";
-import {useContext, useEffect} from "react";
+import {useContext, useEffect, useState} from "react";
 import {Board} from "../../components/Board/Board.tsx";
 import {Tile} from "../../data/types/Tile.ts";
 import Magazine from "../../components/Magazine/Magazine.tsx";
@@ -32,6 +32,8 @@ function Component() {
   const {id} = Route.useParams();
   const {state, dispatch} = useContext(BoardContext);
   const {state: gameState, dispatch: gameDispatch} = useContext(GameContext);
+  const [isCompleted, setCompleted] = useState(false);
+  const [isNextLevel, setNextLevel] = useState(false);
 
   useEffect(() => {
     const level = gameState.levels.find(level => level.id === parseInt(id));
@@ -42,7 +44,9 @@ function Component() {
       return;
     }
     dispatch({type: "LOAD_LEVEL", level});
-  }, [dispatch, id]);
+    setCompleted(level.completed);
+    setNextLevel(gameState.levels.find(level => level.id === parseInt(id) + 1) !== undefined);
+  }, []);
 
   useEffect(() => {
     // Check if the level is complete
@@ -68,6 +72,8 @@ function Component() {
 
     if (complete) {
       gameDispatch({type: "COMPLETE_LEVEL", level: parseInt(id)});
+      setCompleted(true);
+      setNextLevel(gameState.levels.find(level => level.id === parseInt(id) + 1) !== undefined);
     }
   }, [state.pieces]);
 
@@ -91,8 +97,10 @@ function Component() {
   };
 
   return <>
-    <Link to={IndexRoute.to}>Back</Link>
+    <Link to={IndexRoute.to} className={"btn btn-secondary"}>Back</Link>
+    {isCompleted && isNextLevel && <div className={"btn btn-primary"}>Next Level</div>}
     <h2>Level {id}</h2>
+    {isCompleted && <p>Level completed!</p>}
     <div className={Styles.game}>
       <DndContext onDragEnd={handleDragEnd} collisionDetection={collisionDetection}>
         <Board/>
