@@ -46,7 +46,7 @@ function Component() {
     dispatch({type: "LOAD_LEVEL", level});
     setCompleted(level.completed);
     setNextLevel(gameState.levels.find(level => level.id === parseInt(id) + 1) !== undefined);
-  }, []);
+  }, [dispatch, gameState.levels, id]);
 
   useEffect(() => {
     if (!isCompleted) return;
@@ -112,7 +112,9 @@ function Component() {
 
   return <>
     <Link to={IndexRoute.to} className={"btn btn-secondary"}>Back</Link>
-    {isCompleted && isNextLevel && <div className={"btn btn-primary"}>Next Level</div>}
+    {isCompleted && isNextLevel && <Link className={"btn btn-primary"} to={"/level/$id"} params={{
+      id: (parseInt(id) + 1).toString()
+    }}>Next Level</Link>}
     <h2>Level {id}</h2>
     {isCompleted && <p>Level completed!</p>}
     <div className={Styles.game}>
