@@ -13,7 +13,7 @@ export const Route = createRootRoute({
           <Outlet/>
         </BoardProvider>
       </GameProvider>
-      <TanStackRouterDevtools/>
+      {process.env.NODE_ENV != "production" && <TanStackRouterDevtools/>}
     </main>;
   }
 });
