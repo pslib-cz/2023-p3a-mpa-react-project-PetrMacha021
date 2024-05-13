@@ -1,0 +1,23 @@
+.piece {
+    display: grid;
+    width: max-content;
+    background: var(--piece-background);
+    border-collapse: collapse;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+.tile {
+    width: 4em;
+    height: 4em;
+    border: var(--board-border) 1px solid;
+}
+
+@media (min-width: 800px) {
+    .tile {
+        width: 6em;
+        height: 6em;
+    }
+}

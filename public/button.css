@@ -1,0 +1,25 @@
+.btn {
+    display: inline-block;
+    padding: 1em 2em;
+    text-decoration: none;
+    border-radius: 2em;
+    margin: 1em 1em;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+@media (min-width: 800px) {
+    .btn {
+        padding: .75em 1.5em;
+    }
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: var(--primary-text);
+}
+
+.btn-secondary {
+    background: var(--secondary);
+    color: var(--secondary-text);
+}

@@ -1,0 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
+:root {
+    --board-border: #333;
+    --piece-background: #555;
+    --background: #141218;
+    --text: #E6E0E9;
+    --container: #211F26;
+    --primary: #D0BCFF;
+    --primary-text: #381E72;
+    --secondary: #CCC2DC;
+    --secondary-text: #332D41;
+    --error: #8C1D18;
+}
+
+html {
+    background: var(--background);
+    color: var(--text);
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 14px;
+}
+
+@media (min-width: 800px) {
+    html {
+        font-size: 16px;
+    }
+}

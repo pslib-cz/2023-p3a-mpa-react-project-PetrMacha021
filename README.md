@@ -2,7 +2,12 @@
 
 ## Téma
 
-Tady bude krátký a úderný popis o účelu, významu, funkcionalitě...
+IQ OBVODY
+https://mindok.cz/hra/iq-obvody/
+
+Figma: https://www.figma.com/file/7fy7aK0w8MUIs9sseaNvtT/Circuits?type=design&node-id=0%3A1&mode=design&t=sclgfWJm9uArnczV-1
+gh-pages: https://pslib-cz.github.io/2023-p3a-mpa-react-project-PetrMacha021/
+
 
 ## Odkazy pro vývoj
 

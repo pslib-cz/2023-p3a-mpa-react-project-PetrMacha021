@@ -1,0 +1,14 @@
+.container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 2em 3em;
+    background: var(--container);
+    width: 80%;
+    min-height: calc(4 * 4em);
+    text-decoration: none;
+    color: var(--text);
+    border-radius: 0.5em;
+    gap: 1em;
+    font-size: 12px;
+}
